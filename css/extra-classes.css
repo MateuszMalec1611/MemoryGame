@@ -1,0 +1,16 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    padding: 20px;
+    max-width: 700px;
+    height: 100%;
+}
+
+.header {
+    margin-bottom: 40px;
+    font-family: 'DotGothic16', sans-serif;
+    text-align: center;
+    font-size: 55px;
+    letter-spacing: 5px;
+}
