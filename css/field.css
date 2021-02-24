@@ -18,7 +18,7 @@
     transform-style: preserve-3d;
     transition: transform 1s;
     border: 1px solid black;
-    cursor: pointer;
+    cursor: pointer; 
 }
 
 .card-front {
@@ -42,6 +42,7 @@
     background-image: url('/img/1.jpg');
     background-size: contain;
     background-repeat: no-repeat;
+    border-radius: 20px;
     transform: scale(.86);
     z-index: -1;
 }
