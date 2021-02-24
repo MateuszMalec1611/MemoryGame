@@ -66,7 +66,7 @@ const assignPictures = () => {
     $cards.forEach(el => {
         cardsNumber--;
         el.classList.add(ranNums[cardsNumber]); //assigns a class with a photo number to each card
-        el.style.backgroundImage = 'url(../img/a' + ranNums[cardsNumber] + '.png)'; //assigns a random photo to the card
+        el.style.backgroundImage = 'url(./img/a' + ranNums[cardsNumber] + '.png)'; //assigns a random photo to the card
 
     });
 }
@@ -146,7 +146,7 @@ const uncoveredPic = () => {
         arr2[i] = el;
         i++
     });
-    arr2[$pairs - 1].style.backgroundImage = 'url(../img/a' + $scoreCard + '.png)';
+    arr2[$pairs - 1].style.backgroundImage = 'url(./img/a' + $scoreCard + '.png)';
 }
 
 const reset = () => {
