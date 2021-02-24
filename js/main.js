@@ -20,8 +20,7 @@ let $toCompare2; //all card processed to string
 let $pairs = 1; //counts pairs
 let $tries = 1; //counts tries
 let $scoreCard; // stores information about the number of the card that found the pair
-
-
+let u = 1;
 
 
 const main = () => {
@@ -48,6 +47,7 @@ const prepareDOMEvents = () => {
     $alertBtn.addEventListener('click', reset);
 }
 
+
 const assignPictures = () => {
     let cardsNumber = 12;
     let nums = [];
@@ -72,6 +72,10 @@ const assignPictures = () => {
 }
 
 const active = e => {
+    if ($clicks > 2) {
+        active();
+    }
+
     const el = e.target.closest('.card');
 
     if (el.classList.contains('rotate')) {
@@ -89,8 +93,7 @@ const active = e => {
     if ($clicks === 2) { //if two cards are selected it calls a function that compares them
         setTimeout(compare, 1400);
     }
-
-    $clicks === 2 ? $clicks = 1 : $clicks++;
+    $clicks++;
 }
 
 const compare = () => {
@@ -104,15 +107,16 @@ const compare = () => {
         if ($pairs === $allPairs) {
             showAlert();
         }
-
+        $clicks = 1;
         $tries++;
         $pairs++;
+        
     } else { // if the cards do not match, then flips them back
         $firstEl.classList.remove('rotate');
         $secondEl.classList.remove('rotate');
         $triesText.innerText = $tries;
-
-        $tries >= 3 ? showAlert() : $tries++;
+        $tries >= 8 ? showAlert() : $tries++;
+        $clicks = 1;
     }
 }
 
