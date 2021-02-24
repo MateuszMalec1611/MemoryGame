@@ -1,8 +1,8 @@
 'user strict';
 const field = document.querySelector('.field');
 const cards = document.querySelectorAll('.card-back');
-const cardsBackScores = document.querySelectorAll('.card-back-scores');
 const allCards = document.querySelectorAll('.card');
+const cardsBackScores = document.querySelectorAll('.card-back-scores');
 const allCardsScores = document.querySelectorAll('.card-scores');
 const tries = document.querySelector('.tries');
 const pairs = document.querySelector('.pairs');
@@ -10,35 +10,36 @@ const boxAlert = document.querySelector('.box-alert');
 const alert = document.querySelector('.alert-text');
 const alertBtn = document.querySelector('.alert-button');
 
-let $allPairs = 6;
-let $clicks = 1;
-let $firstEl;
-let $secondEl;
-let $toCompare;
-let $toCompare2;
-let $pairs = 1;
-let $tries = 1;
-let $scoreCard;
+let $allPairs = 6; //all possible pairs to be obtained
+let $clicks = 1; //increments to two clicks
+let $firstEl; //first card
+let $secondEl;//seckond card 
+let $toCompare; //all card processed to string
+let $toCompare2; //all card processed to string
+let $pairs = 1; //counts pairs
+let $tries = 1; //counts tries
+let $scoreCard; // stores information about the number of the card that found the pair
 
 const assignPictures = () => {
     let cardsNumber = 12;
-    let nums = [];
+    let nums = []; 
     let ranNums = [];
 
     for (let i = 1; i <= 2; i++) {
         for (let y = 1; y <= $allPairs; y++) {
-            nums.push(y)
+            nums.push(y) //assigns counts from 1 to 6 twice
         }
     }
 
     for (nums, i = nums.length; i--;) {
-        ranNums[i] = nums.splice(Math.floor(Math.random() * (i + 1)), 1)[0];
+        ranNums[i] = nums.splice(Math.floor(Math.random() * (i + 1)), 1)[0]; //mixes the numbers and assigns them to a new array
     }
 
     cards.forEach(el => {
         cardsNumber--;
-        el.classList.add(ranNums[cardsNumber]);
-        el.style.backgroundImage = 'url(/img/' + ranNums[cardsNumber] + '.jpg)';
+        el.classList.add(ranNums[cardsNumber]); //assigns a class with a photo number to each card
+        el.style.backgroundImage = 'url(/img/' + ranNums[cardsNumber] + '.jpg)'; //assigns a random photo to the card
+
     });
 }
 assignPictures();
@@ -53,14 +54,14 @@ const active = e => {
         el.classList.add('rotate');
     }
 
-    $clicks === 1 ? $toCompare = el.innerHTML : $toCompare2 = el.innerHTML;
-    $clicks === 1 ? $firstEl = el : $secondEl = el;
+    $clicks === 1 ? $toCompare = el.innerHTML : $toCompare2 = el.innerHTML; //cards processed to string
+    $clicks === 1 ? $firstEl = el : $secondEl = el; // cards assigned to the new variable
 
-    let arr = [].slice.call(el.children);
-    $scoreCard = arr[1].classList.item(1);
+    let arr = [].slice.call(el.children); // extracting information about the card number
+    $scoreCard = arr[1].classList.item(1); // assigning information about a card number to a variable
 
-    if ($clicks === 2) {
-        setTimeout(compare, 1500);
+    if ($clicks === 2) { //if two cards are selected it calls a function that compares them
+        setTimeout(compare, 1400);
     }
 
     $clicks === 2 ? $clicks = 1 : $clicks++;
@@ -80,7 +81,7 @@ const compare = () => {
 
         $tries++;
         $pairs++;
-    } else {
+    } else { // if the cards do not match, then flips them back
         $firstEl.classList.remove('rotate');
         $secondEl.classList.remove('rotate');
         tries.innerText = $tries;
@@ -117,7 +118,6 @@ const uncoveredPic = () => {
         arr2[i] = el;
         i++
     });
-    console.log($scoreCard);
     arr2[$pairs - 1].style.backgroundImage = 'url(/img/' + $scoreCard + '.jpg)';
 }
 
