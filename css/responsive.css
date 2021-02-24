@@ -7,6 +7,13 @@
     .header {
         font-size: 70px;
     }
+    .alert-text {
+        font-size: 100px;
+    }
+    .alert-button {
+        font-size: 18px;  
+    }
+    
  }
 
 
@@ -15,7 +22,9 @@
         margin-bottom: 80px;
         font-size: 90px;
     }
-      
+
+    
+    
  }
 
 @media (min-width: 1200px) {  }

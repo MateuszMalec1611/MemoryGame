@@ -1,6 +1,7 @@
 @import './global.css';
 @import './extra-classes.css';
 @import './mixins.css';
-@import './responsive.css';
 @import './field.css';
 @import './scores.css';
+@import './info-alert.css';
+@import './responsive.css';
