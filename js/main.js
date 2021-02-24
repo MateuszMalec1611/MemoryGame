@@ -113,7 +113,7 @@ const compare = () => {
         $firstEl.classList.remove('rotate');
         $secondEl.classList.remove('rotate');
         $triesText.innerText = `${$tries}/8`;
-        $tries >= 8 ? showAlert() : $tries++;
+        $tries >= 2 ? showAlert() : $tries++;
         $clicks = 1;
     }
 }
@@ -162,9 +162,8 @@ const reset = () => {
     });
     $allCardsScores.forEach(el => {
         el.classList.remove('rotate');
-    })
-    console.log(`jestem`);
-    $boxAlert.style.display = 'none';
+    });
+    $boxAlert.style.visibility = 'hidden';
     $pairsText.innerText = '0/6';
     $triesText.innerText = '0/8';
     $pairs = 1;
