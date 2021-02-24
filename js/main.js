@@ -1,28 +1,56 @@
 'user strict';
-const field = document.querySelector('.field');
-const cards = document.querySelectorAll('.card-back');
-const allCards = document.querySelectorAll('.card');
-const cardsBackScores = document.querySelectorAll('.card-back-scores');
-const allCardsScores = document.querySelectorAll('.card-scores');
-const tries = document.querySelector('.tries');
-const pairs = document.querySelector('.pairs');
-const boxAlert = document.querySelector('.box-alert');
-const alert = document.querySelector('.alert-text');
-const alertBtn = document.querySelector('.alert-button');
+let $field;
+let $allCards;
+let $cards;
+let $cardsBackScores;
+let $allCardsScores;
+let $triesText;
+let $pairsText;
+let $boxAlert;
+let $alert;
+let $alertBtn;
+
 
 let $allPairs = 6; //all possible pairs to be obtained
 let $clicks = 1; //increments to two clicks
 let $firstEl; //first card
-let $secondEl;//seckond card 
+let $secondEl; //seckond card 
 let $toCompare; //all card processed to string
 let $toCompare2; //all card processed to string
 let $pairs = 1; //counts pairs
 let $tries = 1; //counts tries
 let $scoreCard; // stores information about the number of the card that found the pair
 
+
+
+
+const main = () => {
+    prepareDOMElements();
+    prepareDOMEvents();
+    assignPictures();
+}
+
+const prepareDOMElements = () => {
+    $field = document.querySelector('.field');
+    $allCards = document.querySelectorAll('.card');
+    $cards = document.querySelectorAll('.card-back');
+    $cardsBackScores = document.querySelectorAll('.card-back-scores');
+    $allCardsScores = document.querySelectorAll('.card-scores');
+    $triesText = document.querySelector('.tries');
+    $pairsText = document.querySelector('.pairs');
+    $boxAlert = document.querySelector('.box-alert');
+    $alert = document.querySelector('.alert-text');
+    $alertBtn = document.querySelector('.alert-button');
+}
+
+const prepareDOMEvents = () => {
+    $field.addEventListener('click', active);
+    $alertBtn.addEventListener('click', reset);
+}
+
 const assignPictures = () => {
     let cardsNumber = 12;
-    let nums = []; 
+    let nums = [];
     let ranNums = [];
 
     for (let i = 1; i <= 2; i++) {
@@ -35,15 +63,13 @@ const assignPictures = () => {
         ranNums[i] = nums.splice(Math.floor(Math.random() * (i + 1)), 1)[0]; //mixes the numbers and assigns them to a new array
     }
 
-    cards.forEach(el => {
+    $cards.forEach(el => {
         cardsNumber--;
         el.classList.add(ranNums[cardsNumber]); //assigns a class with a photo number to each card
         el.style.backgroundImage = 'url(/img/' + ranNums[cardsNumber] + '.jpg)'; //assigns a random photo to the card
 
     });
 }
-assignPictures();
-
 
 const active = e => {
     const el = e.target.closest('.card');
@@ -71,8 +97,8 @@ const compare = () => {
     if ($toCompare === $toCompare2) {
         $firstEl.style.transform = 'scale(.6)';
         $secondEl.style.transform = 'scale(.6)';
-        pairs.innerText = $pairs;
-        tries.innerText = $tries;
+        $pairsText.innerText = $pairs;
+        $triesText.innerText = $tries;
         uncoveredPic();
 
         if ($pairs === $allPairs) {
@@ -84,22 +110,22 @@ const compare = () => {
     } else { // if the cards do not match, then flips them back
         $firstEl.classList.remove('rotate');
         $secondEl.classList.remove('rotate');
-        tries.innerText = $tries;
+        $triesText.innerText = $tries;
 
-        $tries >= 30 ? showAlert() : $tries++;
+        $tries >= 3 ? showAlert() : $tries++;
     }
 }
 
 const showAlert = () => {
     if ($pairs === $allPairs) {
-        boxAlert.style.visibility = 'visible';
-        alert.style.color = 'yellowgreen';
-        alert.innerText = 'wygrałeś!';
+        $boxAlert.style.visibility = 'visible';
+        $alert.style.color = 'yellowgreen';
+        $alert.innerText = 'wygrałeś!';
 
     } else {
-        boxAlert.style.visibility = 'visible';
-        alert.style.color = 'tomato';
-        alert.innerText = 'przegrałeś!';
+        $boxAlert.style.visibility = 'visible';
+        $alert.style.color = 'tomato';
+        $alert.innerText = 'przegrałeś!';
     }
 }
 
@@ -107,19 +133,42 @@ const uncoveredPic = () => {
     let arr1 = [];
     let arr2 = [];
     let i = 0;
-    allCardsScores.forEach(el => {
+    $allCardsScores.forEach(el => {
         arr1[i] = el;
         i++;
     });
     arr1[$pairs - 1].classList.add('rotate');
     i = 0;
 
-    cardsBackScores.forEach(el => {
+    $cardsBackScores.forEach(el => {
         arr2[i] = el;
         i++
     });
     arr2[$pairs - 1].style.backgroundImage = 'url(/img/' + $scoreCard + '.jpg)';
 }
 
+const reset = () => {
+    let classToRemove;
 
-field.addEventListener('click', active);
+    $allCards.forEach(el => {
+        el.classList.remove('rotate');
+        el.removeAttribute('style');
+    });
+    $cards.forEach(el => {
+        classToRemove = el.classList.item(1);
+        el.classList.remove(classToRemove);
+    });
+    $allCardsScores.forEach(el => {
+        el.classList.remove('rotate');
+    })
+    console.log(`jestem`);
+    $boxAlert.style.display = 'none';
+    $pairsText.innerText = '0';
+    $triesText.innerText = '0';
+    $pairs = 1;
+    $tries = 1;
+    main();
+}
+
+
+document.addEventListener('DOMContentLoaded', main);
