@@ -113,7 +113,7 @@ const compare = () => {
         $firstEl.classList.remove('rotate');
         $secondEl.classList.remove('rotate');
         $triesText.innerText = `${$tries}/8`;
-        $tries >= 2 ? showAlert() : $tries++;
+        $tries >= 8 ? showAlert() : $tries++;
         $clicks = 1;
     }
 }
