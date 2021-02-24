@@ -146,7 +146,7 @@ const uncoveredPic = () => {
         arr2[i] = el;
         i++
     });
-    arr2[$pairs - 1].style.backgroundImage = 'url(/img/' + $scoreCard + '.jpg)';
+    arr2[$pairs - 1].style.backgroundImage = 'url(../img/' + $scoreCard + '.jpg)';
 }
 
 const reset = () => {
