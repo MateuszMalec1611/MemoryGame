@@ -121,7 +121,7 @@ const compare = () => {
     } else { // if the cards do not match, then flips them back
         $firstEl.classList.remove('rotate');
         $secondEl.classList.remove('rotate');
-        $triesText.innerText = `${$tries}/8`;
+        $triesText.innerText = `${$tries}/3`;
         $tries >= 3 ? showAlert() : $tries++;
         $clicks = 1;
     }
