@@ -100,21 +100,19 @@ const compare = () => {
     if ($toCompare === $toCompare2) {
         $firstEl.style.transform = 'scale(.6)';
         $secondEl.style.transform = 'scale(.6)';
-        $pairsText.innerText = $pairs;
-        $triesText.innerText = $tries;
+        $pairsText.innerText = `${$pairs}/6`;
         uncoveredPic();
 
         if ($pairs === $allPairs) {
             showAlert();
         }
         $clicks = 1;
-        $tries++;
         $pairs++;
 
     } else { // if the cards do not match, then flips them back
         $firstEl.classList.remove('rotate');
         $secondEl.classList.remove('rotate');
-        $triesText.innerText = $tries;
+        $triesText.innerText = `${$tries}/8`;
         $tries >= 8 ? showAlert() : $tries++;
         $clicks = 1;
     }
@@ -167,8 +165,8 @@ const reset = () => {
     })
     console.log(`jestem`);
     $boxAlert.style.display = 'none';
-    $pairsText.innerText = '0';
-    $triesText.innerText = '0';
+    $pairsText.innerText = '0/6';
+    $triesText.innerText = '0/8';
     $pairs = 1;
     $tries = 1;
     main();
