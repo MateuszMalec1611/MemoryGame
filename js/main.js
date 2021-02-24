@@ -1,7 +1,9 @@
 'user strict';
 const field = document.querySelector('.field');
 const cards = document.querySelectorAll('.card-back');
+const cardsBackScores = document.querySelectorAll('.card-back-scores');
 const allCards = document.querySelectorAll('.card');
+const allCardsScores = document.querySelectorAll('.card-scores');
 const tries = document.querySelector('.tries');
 const pairs = document.querySelector('.pairs');
 const boxAlert = document.querySelector('.box-alert');
@@ -16,6 +18,7 @@ let $toCompare;
 let $toCompare2;
 let $pairs = 1;
 let $tries = 1;
+let $scoreCard;
 
 const assignPictures = () => {
     let cardsNumber = 12;
@@ -42,7 +45,6 @@ assignPictures();
 
 
 const active = e => {
-
     const el = e.target.closest('.card');
 
     if (el.classList.contains('rotate')) {
@@ -54,6 +56,8 @@ const active = e => {
     $clicks === 1 ? $toCompare = el.innerHTML : $toCompare2 = el.innerHTML;
     $clicks === 1 ? $firstEl = el : $secondEl = el;
 
+    let arr = [].slice.call(el.children);
+    $scoreCard = arr[1].classList.item(1);
 
     if ($clicks === 2) {
         setTimeout(compare, 1500);
@@ -68,6 +72,7 @@ const compare = () => {
         $secondEl.style.transform = 'scale(.6)';
         pairs.innerText = $pairs;
         tries.innerText = $tries;
+        uncoveredPic();
 
         if ($pairs === $allPairs) {
             showAlert();
@@ -94,9 +99,27 @@ const showAlert = () => {
         boxAlert.style.visibility = 'visible';
         alert.style.color = 'tomato';
         alert.innerText = 'przegrałeś!';
-
     }
 }
 
-field.addEventListener('click', active);
+const uncoveredPic = () => {
+    let arr1 = [];
+    let arr2 = [];
+    let i = 0;
+    allCardsScores.forEach(el => {
+        arr1[i] = el;
+        i++;
+    });
+    arr1[$pairs - 1].classList.add('rotate');
+    i = 0;
 
+    cardsBackScores.forEach(el => {
+        arr2[i] = el;
+        i++
+    });
+    console.log($scoreCard);
+    arr2[$pairs - 1].style.backgroundImage = 'url(/img/' + $scoreCard + '.jpg)';
+}
+
+
+field.addEventListener('click', active);
