@@ -66,7 +66,7 @@ const assignPictures = () => {
     $cards.forEach(el => {
         cardsNumber--;
         el.classList.add(ranNums[cardsNumber]); //assigns a class with a photo number to each card
-        el.style.backgroundImage = 'url(/img/' + ranNums[cardsNumber] + '.jpg)'; //assigns a random photo to the card
+        el.style.backgroundImage = 'url(../img/' + ranNums[cardsNumber] + '.jpg)'; //assigns a random photo to the card
 
     });
 }
@@ -110,7 +110,7 @@ const compare = () => {
         $clicks = 1;
         $tries++;
         $pairs++;
-        
+
     } else { // if the cards do not match, then flips them back
         $firstEl.classList.remove('rotate');
         $secondEl.classList.remove('rotate');
