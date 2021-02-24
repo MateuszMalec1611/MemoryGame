@@ -38,6 +38,7 @@
 }
 
 .cards-box {
+    text-align: center;
     margin-top: 10px;
     display: grid;
     width: 90%;
@@ -47,4 +48,14 @@
 
 .card-scores {
     cursor: unset;
+}
+
+.reset-button {
+    margin-top: 15px;
+    padding: 5px 10px;
+    transition: transform .3s;
+}
+
+.reset-button:hover {
+    transform: scale(.96);
 }

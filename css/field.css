@@ -44,7 +44,7 @@
     background-size: contain;
     background-repeat: no-repeat;
     border-radius: 20px;
-    transform: scale(.86);
+    transform: scale(.78);
     backface-visibility: visible;
     z-index: 0;
 }

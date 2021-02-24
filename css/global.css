@@ -16,7 +16,10 @@ body {
 
 button {
     background-color: white;
+    text-transform: uppercase;
     border: none;
+    border-radius: 10px;
+    font-weight: 700;
     outline: none;
     cursor: pointer;
 }

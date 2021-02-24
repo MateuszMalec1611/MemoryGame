@@ -8,6 +8,7 @@ let $triesText;
 let $pairsText;
 let $boxAlert;
 let $alert;
+let $resetBtn;
 let $alertBtn;
 
 
@@ -39,12 +40,14 @@ const prepareDOMElements = () => {
     $pairsText = document.querySelector('.pairs');
     $boxAlert = document.querySelector('.box-alert');
     $alert = document.querySelector('.alert-text');
+    $resetBtn = document.querySelector('.reset-button');
     $alertBtn = document.querySelector('.alert-button');
 }
 
 const prepareDOMEvents = () => {
     $field.addEventListener('click', active);
     $alertBtn.addEventListener('click', reset);
+    $resetBtn.addEventListener('click', reset);
 }
 
 
@@ -62,13 +65,19 @@ const assignPictures = () => {
     for (nums, i = nums.length; i--;) {
         ranNums[i] = nums.splice(Math.floor(Math.random() * (i + 1)), 1)[0]; //mixes the numbers and assigns them to a new array
     }
-
+    
     $cards.forEach(el => {
         cardsNumber--;
         el.classList.add(ranNums[cardsNumber]); //assigns a class with a photo number to each card
         el.style.backgroundImage = 'url(./img/a' + ranNums[cardsNumber] + '.png)'; //assigns a random photo to the card
-
     });
+    setTimeout(hidePhotos, 1500);
+}
+
+const hidePhotos = () => {
+    $allCards.forEach(el => {
+        el.classList.remove('rotate');
+    })
 }
 
 const active = e => {
@@ -113,7 +122,7 @@ const compare = () => {
         $firstEl.classList.remove('rotate');
         $secondEl.classList.remove('rotate');
         $triesText.innerText = `${$tries}/8`;
-        $tries >= 8 ? showAlert() : $tries++;
+        $tries >= 3 ? showAlert() : $tries++;
         $clicks = 1;
     }
 }
@@ -153,7 +162,7 @@ const reset = () => {
     let classToRemove;
 
     $allCards.forEach(el => {
-        el.classList.remove('rotate');
+        el.classList.add('rotate');
         el.removeAttribute('style');
     });
     $cards.forEach(el => {
@@ -165,7 +174,7 @@ const reset = () => {
     });
     $boxAlert.style.visibility = 'hidden';
     $pairsText.innerText = '0/6';
-    $triesText.innerText = '0/8';
+    $triesText.innerText = '0/3';
     $pairs = 1;
     $tries = 1;
     main();

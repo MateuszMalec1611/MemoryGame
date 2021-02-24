@@ -1,6 +1,9 @@
 
 @media (min-width: 576px) { 
-    
+    .reset-button {
+        margin-left: 25px;
+        padding: 10px 15px;
+    }
 }
 
 @media (min-width: 768px) { 
@@ -12,6 +15,11 @@
     }
     .alert-button {
         font-size: 18px;  
+    }
+    .reset-button {
+        margin-left: 25px;
+        padding: 12px 18px;
+        font-size: 18px;
     }
     
  }
