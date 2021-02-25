@@ -92,9 +92,7 @@ const active = e => {
     let arr = [].slice.call(el.children); // extracting information about the card number
     $scoreCard = arr[1].classList.item(1); // assigning information about a card number to a variable
 
-    if ($clicks === 2) { //if two cards are selected it calls a function that compares them
-        setTimeout(compare, 1400);
-    }
+    if ($clicks === 2) setTimeout(compare, 1400); //if two cards are selected it calls a function that compares them
     $clicks++;
 }
 //compares the cards
@@ -105,9 +103,8 @@ const compare = () => {
         $pairsText.innerText = `${$pairs}/6`;
         uncoveredPic();
 
-        if ($pairs === $allPairs) {
-            showAlert();
-        }
+        if ($pairs === $allPairs) showAlert();
+    
         $clicks = 1;
         $pairs++;
 
