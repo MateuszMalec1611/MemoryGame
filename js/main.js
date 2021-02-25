@@ -1,16 +1,15 @@
 'user strict';
 let $field;
-let $allCards;
-let $cards;
-let $cardsBackScores;
-let $allCardsScores;
+let $allCards; // all cards(parent for the back of the cards)
+let $cards; // all cards(BACK)
+let $cardsBackScores; //all cards(Back) from score table
+let $allCardsScores; //all cards from scores
 let $triesText;
 let $pairsText;
 let $boxAlert;
-let $alert;
+let $alert; // text
 let $resetBtn;
 let $alertBtn;
-
 
 let $allPairs = 6; //all possible pairs to be obtained
 let $clicks = 1; //increments to two clicks
@@ -21,8 +20,6 @@ let $toCompare2; //all card processed to string
 let $pairs = 1; //counts pairs
 let $tries = 1; //counts tries
 let $scoreCard; // stores information about the number of the card that found the pair
-let u = 1;
-
 
 const main = () => {
     prepareDOMElements();
@@ -49,8 +46,7 @@ const prepareDOMEvents = () => {
     $alertBtn.addEventListener('click', reset);
     $resetBtn.addEventListener('click', reset);
 }
-
-
+//assigns random pictures to cards
 const assignPictures = () => {
     let cardsNumber = 12;
     let nums = [];
@@ -73,13 +69,13 @@ const assignPictures = () => {
     });
     setTimeout(hidePhotos, 1500);
 }
-
+//turns the cards
 const hidePhotos = () => {
     $allCards.forEach(el => {
         el.classList.remove('rotate');
     })
 }
-
+//turns the cards and transmits information about the picture
 const active = e => {
     if ($clicks > 2) {
         active();
@@ -95,7 +91,6 @@ const active = e => {
 
     $clicks === 1 ? $toCompare = el.innerHTML : $toCompare2 = el.innerHTML; //cards processed to string
     $clicks === 1 ? $firstEl = el : $secondEl = el; // cards assigned to the new variable
-
     let arr = [].slice.call(el.children); // extracting information about the card number
     $scoreCard = arr[1].classList.item(1); // assigning information about a card number to a variable
 
@@ -104,7 +99,7 @@ const active = e => {
     }
     $clicks++;
 }
-
+//compares the cards
 const compare = () => {
     if ($toCompare === $toCompare2) {
         $firstEl.style.transform = 'scale(.6)';
@@ -126,7 +121,7 @@ const compare = () => {
         $clicks = 1;
     }
 }
-
+//information won / lost
 const showAlert = () => {
     if ($pairs === $allPairs) {
         $boxAlert.style.visibility = 'visible';
@@ -139,7 +134,7 @@ const showAlert = () => {
         $alert.innerText = 'przegrałeś!';
     }
 }
-
+//flips pictures in a section scores and assigns a picture
 const uncoveredPic = () => {
     let arr1 = [];
     let arr2 = [];
@@ -157,7 +152,7 @@ const uncoveredPic = () => {
     });
     arr2[$pairs - 1].style.backgroundImage = 'url(./img/a' + $scoreCard + '.png)';
 }
-
+//reset the game
 const reset = () => {
     let classToRemove;
 
@@ -179,6 +174,5 @@ const reset = () => {
     $tries = 1;
     main();
 }
-
 
 document.addEventListener('DOMContentLoaded', main);
