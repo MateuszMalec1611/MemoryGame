@@ -77,10 +77,8 @@ const hidePhotos = () => {
 }
 //turns the cards and transmits information about the picture
 const active = e => {
-    if ($clicks > 2) {
-        active();
-    }
-
+    if ($clicks > 2) return;
+    
     const el = e.target.closest('.card');
 
     if (el.classList.contains('rotate')) {
