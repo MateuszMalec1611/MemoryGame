@@ -53,9 +53,7 @@ const assignPictures = () => {
     let ranNums = [];
 
     for (let i = 1; i <= 2; i++) {
-        for (let y = 1; y <= $allPairs; y++) {
-            nums.push(y) //assigns counts from 1 to 6 twice
-        }
+        for (let y = 1; y <= $allPairs; y++) nums.push(y); //assigns counts from 1 to 6 twice
     }
 
     for (nums, i = nums.length; i--;) {
@@ -71,9 +69,7 @@ const assignPictures = () => {
 }
 //turns the cards
 const hidePhotos = () => {
-    $allCards.forEach(el => {
-        el.classList.remove('rotate');
-    })
+    $allCards.forEach(el => el.classList.remove('rotate'));
 }
 //turns the cards and transmits information about the picture
 const active = e => {
@@ -98,8 +94,7 @@ const active = e => {
 //compares the cards
 const compare = () => {
     if ($toCompare === $toCompare2) {
-        $firstEl.style.transform = 'scale(.6)';
-        $secondEl.style.transform = 'scale(.6)';
+        [$secondEl, $firstEl].forEach(el => el.style.transform = 'scale(.6)');
         $pairsText.innerText = `${$pairs}/6`;
         uncoveredPic();
 
@@ -109,8 +104,7 @@ const compare = () => {
         $pairs++;
 
     } else { // if the cards do not match, then flips them back
-        $firstEl.classList.remove('rotate');
-        $secondEl.classList.remove('rotate');
+        [$secondEl, $firstEl].forEach(el => el.classList.remove('rotate'));
         $triesText.innerText = `${$tries}/3`;
         $tries >= 3 ? showAlert() : $tries++;
         $clicks = 1;
