@@ -12,13 +12,14 @@ let $resetBtn;
 let $alertBtn;
 
 let $allPairs = 6; //all possible pairs to be obtained
+let $allTries = 3; //maximum number of attempts
+let $pairs = 1; //counts pairs
+let $tries = 1; //counts tries
 let $clicks = 1; //increments to two clicks
 let $firstEl; //first card
 let $secondEl; //seckond card 
 let $toCompare; //all card processed to string
 let $toCompare2; //all card processed to string
-let $pairs = 1; //counts pairs
-let $tries = 1; //counts tries
 let $scoreCard; // stores information about the number of the card that found the pair
 
 const main = () => {
@@ -95,7 +96,7 @@ const active = e => {
 const compare = () => {
     if ($toCompare === $toCompare2) {
         [$secondEl, $firstEl].forEach(el => el.style.transform = 'scale(.6)');
-        $pairsText.innerText = `${$pairs}/6`;
+        $pairsText.innerText = `${$pairs}/${$allPairs}`;
         uncoveredPic();
 
         if ($pairs === $allPairs) showAlert();
@@ -105,8 +106,8 @@ const compare = () => {
 
     } else { // if the cards do not match, then flips them back
         [$secondEl, $firstEl].forEach(el => el.classList.remove('rotate'));
-        $triesText.innerText = `${$tries}/3`;
-        $tries >= 3 ? showAlert() : $tries++;
+        $triesText.innerText = `${$tries}/${$allTries}`;
+        $tries >= $allTries ? showAlert() : $tries++;
         $clicks = 1;
     }
 }
@@ -153,15 +154,14 @@ const reset = () => {
         classToRemove = el.classList.item(1);
         el.classList.remove(classToRemove);
     });
-    $allCardsScores.forEach(el => {
-        el.classList.remove('rotate');
-    });
+    $allCardsScores.forEach(el => el.classList.remove('rotate'));
+    
     $boxAlert.style.visibility = 'hidden';
-    $pairsText.innerText = '0/6';
-    $triesText.innerText = '0/3';
+    $pairsText.innerText = `0/${$allPairs}`;
+    $triesText.innerText = `0/${$allTries}`;
     $pairs = 1;
     $tries = 1;
-    main();
+    assignPictures();
 }
 
 document.addEventListener('DOMContentLoaded', main);
