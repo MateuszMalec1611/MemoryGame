@@ -1,4 +1,4 @@
-'user strict';
+'use strict';
 let $field;
 let $allCards; // all cards(parent for the back of the cards)
 let $cards; // all cards(BACK)
@@ -57,8 +57,8 @@ const assignPictures = () => {
         for (let y = 1; y <= $allPairs; y++) nums.push(y); //assigns counts from 1 to 6 twice
     }
 
-    for (nums, i = nums.length; i--;) {
-        ranNums[i] = nums.splice(Math.floor(Math.random() * (i + 1)), 1)[0]; //mixes the numbers and assigns them to a new array
+    for (let i; i = nums.length; i--) {
+        ranNums[i - 1] = nums.splice(Math.floor(Math.random() * (i + 1)), 1)[0]; //mixes the numbers and assigns them to a new array
     }
     
     $cards.forEach(el => {
