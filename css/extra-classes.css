@@ -8,9 +8,21 @@
 }
 
 .header {
-    margin-bottom: 40px;
-    font-family: 'DotGothic16', sans-serif;
+    margin-bottom: 20px;
     text-align: center;
+    font-family: 'DotGothic16', sans-serif;
     font-size: 55px;
     letter-spacing: 5px;
 }
+
+.timer {
+    position: relative;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    font-family: 'DotGothic16', sans-serif;
+    font-size: 30px;
+    color: greenyellow;
+    text-transform: uppercase;
+}
+

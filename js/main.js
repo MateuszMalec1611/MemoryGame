@@ -1,167 +1,185 @@
-'use strict';
-let $field;
-let $allCards; // all cards(parent for the back of the cards)
-let $cards; // all cards(BACK)
-let $cardsBackScores; //all cards(Back) from score table
-let $allCardsScores; //all cards from scores
-let $triesText;
-let $pairsText;
-let $boxAlert;
-let $alert; // text
-let $resetBtn;
-let $alertBtn;
-
-let $allPairs = 6; //all possible pairs to be obtained
-let $allTries = 3; //maximum number of attempts
-let $pairs = 1; //counts pairs
-let $tries = 1; //counts tries
-let $clicks = 1; //increments to two clicks
-let $firstEl; //first card
-let $secondEl; //seckond card 
-let $toCompare; //all card processed to string
-let $toCompare2; //all card processed to string
-let $scoreCard; // stores information about the number of the card that found the pair
-
-const main = () => {
-    prepareDOMElements();
-    prepareDOMEvents();
-    assignPictures();
+const params = {
+  WON: 'won',
+  LOST: 'lost'
 }
 
-const prepareDOMElements = () => {
-    $field = document.querySelector('.field');
-    $allCards = document.querySelectorAll('.card');
-    $cards = document.querySelectorAll('.card-back');
-    $cardsBackScores = document.querySelectorAll('.card-back-scores');
-    $allCardsScores = document.querySelectorAll('.card-scores');
-    $triesText = document.querySelector('.tries');
-    $pairsText = document.querySelector('.pairs');
-    $boxAlert = document.querySelector('.box-alert');
-    $alert = document.querySelector('.alert-text');
-    $resetBtn = document.querySelector('.reset-button');
-    $alertBtn = document.querySelector('.alert-button');
-}
+class MemoryGame {
+  constructor(cardsNumber, tries, time) {
+    this.cardsNumber = cardsNumber;
+    this.maxTries = tries;
+    this.time = time;
+    this.allPairs = cardsNumber / 2;
+    this.board = document.querySelector('.field');
+    this.uncoverdCardsBox = document.querySelector('.cards-box');
+    this.clicks = 0;
+    this.pairs = 0;
+    this.tries = 0;
+    this.firstCardNode;
+    this.timer;
 
-const prepareDOMEvents = () => {
-    $field.addEventListener('click', active);
-    $alertBtn.addEventListener('click', reset);
-    $resetBtn.addEventListener('click', reset);
-}
-//assigns random pictures to cards
-const assignPictures = () => {
-    let cardsNumber = 12;
-    let nums = [];
-    let ranNums = [];
+    this.pairsText = document.querySelector('.pairs');
+    this.triesText = document.querySelector('.tries');
+    this.timerText = document.querySelector('.timer');
 
-    for (let i = 1; i <= 2; i++) {
-        for (let y = 1; y <= $allPairs; y++) nums.push(y); //assigns counts from 1 to 6 twice
+    this.boxAlert = document.querySelector('.box-alert');
+    this.alert = document.querySelector('.alert-text');
+    this.resetBtn = document.querySelector('.reset-button');
+    this.alertBtn = document.querySelector('.alert-button');
+  }
+
+  init() {
+    this.prepareCards();
+    setTimeout(() => {
+      this.hideCards();
+      this.setTime();
+      this.prepareDOMEvents();
+    }, 1500);
+  }
+
+  setTime = () => {
+    this.timer = setInterval(() => {
+      this.time--;
+      if (this.time === 0) {
+        clearInterval(this.timer);
+        this.showAlert(params.LOST);
+      }
+      if(this.time === 6) this.timerText.style.color = 'orange';
+      if(this.time === 3) this.timerText.style.color = 'tomato';
+      this.timerText.textContent = this.time;
+    }, 1000);
+  }
+
+  prepareCards = () => {
+    const cards = this.board.children;
+    let duplicateNum = 1;
+
+    for (let i = 0; i < this.cardsNumber; i++) {
+      const randomNum = Math.floor(Math.random() * 12);
+      const cardBack = cards[i].lastElementChild;
+      cards[i].style.order = randomNum;
+
+      if (i > 5) {
+        cardBack.style.backgroundImage = `url(img/a${duplicateNum}.png)`
+        cards[i].setAttribute('data-id', duplicateNum);
+        duplicateNum++;
+      } else {
+        cardBack.style.backgroundImage = `url(img/a${i + 1}.png)`
+        cards[i].setAttribute('data-id', i + 1);
+      }
+    }
+  }
+
+  prepareDOMEvents = () => {
+    this.board.addEventListener('click', this.rotateCard);
+    this.resetBtn.addEventListener('click', this.reset);
+    this.alertBtn.addEventListener('click', this.reset);
+  }
+
+  hideCards = () => {
+    this.board.classList.remove('show-all');
+  }
+
+  rotateCard = event => {
+    const card = event.target.closest('.card');
+    if (!card || this.clicks > 1 || card.classList.contains('rotate') || this.board.classList.contains('show-all')) return;
+
+    this.clicks++;
+
+    if (this.clicks === 1) {
+      card.classList.add('rotate');
+      return this.firstCardNode = card;
     }
 
-    for (let i; i = nums.length; i--) {
-        ranNums[i - 1] = nums.splice(Math.floor(Math.random() * (i + 1)), 1)[0]; //mixes the numbers and assigns them to a new array
+    if (this.clicks === 2) {
+      card.classList.add('rotate');
+      setTimeout(this.compareCards, 100, card);
     }
-    
-    $cards.forEach(el => {
-        cardsNumber--;
-        el.classList.add(ranNums[cardsNumber]); //assigns a class with a photo number to each card
-        el.style.backgroundImage = 'url(./img/a' + ranNums[cardsNumber] + '.png)'; //assigns a random photo to the card
-    });
-    setTimeout(hidePhotos, 1500);
-}
-//turns the cards
-const hidePhotos = () => {
-    $allCards.forEach(el => el.classList.remove('rotate'));
-}
-//turns the cards and transmits information about the picture
-const active = e => {
-    if ($clicks > 2) return;
-    
-    const el = e.target.closest('.card');
+  }
 
-    if (el.classList.contains('rotate')) {
-        return;
+  compareCards = secondCard => {
+    const firstCardId = this.firstCardNode.dataset.id;
+    const secondCardId = secondCard.dataset.id;
+
+    if (firstCardId === secondCardId) {
+      this.pairs++;
+      this.clicks = 0;
+      this.pairsText.textContent = `${this.pairs}/${this.allPairs}`;
+      [secondCard, this.firstCardNode].forEach(el => el.classList.add('found'));
+      this.uncoveredPic(firstCardId, this.pairs);
+
+      if (this.allPairs === this.pairs){
+        clearInterval(this.timer);
+        this.showAlert(params.WON);
+      } 
+        
     } else {
-        el.classList.add('rotate');
+
+      setTimeout(() => {
+        [secondCard, this.firstCardNode].forEach(el => el.classList.remove('rotate'));
+        this.clicks = 0;
+        this.tries++
+        this.triesText.textContent = `${this.tries}/${this.maxTries}`;
+
+        if (this.tries === this.maxTries) {
+          clearInterval(this.timer);
+          this.showAlert(params.LOST);
+        } 
+      }, 900);
     }
+  }
 
-    $clicks === 1 ? $toCompare = el.innerHTML : $toCompare2 = el.innerHTML; //cards processed to string
-    $clicks === 1 ? $firstEl = el : $secondEl = el; // cards assigned to the new variable
-    let arr = [].slice.call(el.children); // extracting information about the card number
-    $scoreCard = arr[1].classList.item(1); // assigning information about a card number to a variable
+  showAlert = param => {
+    switch (param) {
+      case params.WON:
+        console.log(`jestem`);
+        this.boxAlert.style.visibility = 'visible';
+        this.alert.style.color = 'yellowgreen';
+        this.alert.innerText = 'wygrałeś!';
+        break;
+      case params.LOST:
+        this.boxAlert.style.visibility = 'visible';
+        this.alert.style.color = 'tomato';
+        this.alert.innerText = 'przegrałeś!';
+        break;
 
-    if ($clicks === 2) setTimeout(compare, 1400); //if two cards are selected it calls a function that compares them
-    $clicks++;
-}
-//compares the cards
-const compare = () => {
-    if ($toCompare === $toCompare2) {
-        [$secondEl, $firstEl].forEach(el => el.style.transform = 'scale(.6)');
-        $pairsText.innerText = `${$pairs}/${$allPairs}`;
-        uncoveredPic();
+      default:
+        break;
+    }
+  }
 
-        if ($pairs === $allPairs) showAlert();
+  uncoveredPic = (cardId, pairNumber) => {
+    const boxChilds = this.uncoverdCardsBox.children;
+    const boxToUncover = boxChilds[pairNumber - 1];
+    const boxImageWrapper = boxToUncover.lastElementChild;
+
+    boxImageWrapper.style.backgroundImage = `url(img/a${cardId}.png)`
+    boxToUncover.classList.add('rotate');
+  }
+
+  reset = () => {
+    const cards = this.board.children;
+    const cardsBack = this.uncoverdCardsBox.children;
+
+    for (let i = 0; i < this.cardsNumber; i++) {
+      cards[i].classList.remove('rotate');
+      cards[i].classList.remove('found');
+      if (i < 6) cardsBack[i].classList.remove('rotate');
+    }
+    this.board.classList.add('show-all');
+    this.boxAlert.style.visibility = 'hidden';
+    this.pairs = 0;
+    this.tries = 0;
+    this.time = 10;
+    this.timerText.style.color = 'greenyellow';
+    this.timerText.textContent = this.time;
+    this.pairsText.textContent = `0/${this.allPairs}`;
+    this.triesText.textContent = `0/${this.maxTries}`;
     
-        $clicks = 1;
-        $pairs++;
-
-    } else { // if the cards do not match, then flips them back
-        [$secondEl, $firstEl].forEach(el => el.classList.remove('rotate'));
-        $triesText.innerText = `${$tries}/${$allTries}`;
-        $tries >= $allTries ? showAlert() : $tries++;
-        $clicks = 1;
-    }
-}
-//information won / lost
-const showAlert = () => {
-    if ($pairs === $allPairs) {
-        $boxAlert.style.visibility = 'visible';
-        $alert.style.color = 'yellowgreen';
-        $alert.innerText = 'wygrałeś!';
-
-    } else {
-        $boxAlert.style.visibility = 'visible';
-        $alert.style.color = 'tomato';
-        $alert.innerText = 'przegrałeś!';
-    }
-}
-//flips pictures in a section scores and assigns a picture
-const uncoveredPic = () => {
-    let arr1 = [];
-    let arr2 = [];
-    let i = 0;
-    $allCardsScores.forEach(el => {
-        arr1[i] = el;
-        i++;
-    });
-    arr1[$pairs - 1].classList.add('rotate');
-    i = 0;
-
-    $cardsBackScores.forEach(el => {
-        arr2[i] = el;
-        i++
-    });
-    arr2[$pairs - 1].style.backgroundImage = 'url(./img/a' + $scoreCard + '.png)';
-}
-//reset the game
-const reset = () => {
-    let classToRemove;
-
-    $allCards.forEach(el => {
-        el.classList.add('rotate');
-        el.removeAttribute('style');
-    });
-    $cards.forEach(el => {
-        classToRemove = el.classList.item(1);
-        el.classList.remove(classToRemove);
-    });
-    $allCardsScores.forEach(el => el.classList.remove('rotate'));
-    
-    $boxAlert.style.visibility = 'hidden';
-    $pairsText.innerText = `0/${$allPairs}`;
-    $triesText.innerText = `0/${$allTries}`;
-    $pairs = 1;
-    $tries = 1;
-    assignPictures();
+    clearInterval(this.timer);
+    this.init();
+  }
 }
 
-document.addEventListener('DOMContentLoaded', main);
+
+const newGame = new MemoryGame(12, 3, 10);
+newGame.init();

@@ -21,6 +21,13 @@
     cursor: pointer; 
 }
 
+.field.show-all .card {
+    transform: rotateY(180deg);
+}
+.rotate.found {
+    transform: scale(.75) rotateY(180deg);
+}
+
 .card-front {
     position: absolute;
     top: 0;
@@ -44,7 +51,7 @@
     background-size: contain;
     background-repeat: no-repeat;
     border-radius: 20px;
-    transform: scale(.78);
+    transform: scale(.83);
     backface-visibility: visible;
     z-index: 0;
 }
