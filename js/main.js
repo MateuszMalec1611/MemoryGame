@@ -16,6 +16,7 @@ class MemoryGame {
     this.tries = 0;
     this.firstCardNode;
     this.timer;
+    this.isActive = true;
 
     this.pairsText = document.querySelector('.pairs');
     this.triesText = document.querySelector('.tries');
@@ -43,8 +44,8 @@ class MemoryGame {
         clearInterval(this.timer);
         this.showAlert(params.LOST);
       }
-      if(this.time === 6) this.timerText.style.color = 'orange';
-      if(this.time === 3) this.timerText.style.color = 'tomato';
+      if (this.time === 6) this.timerText.style.color = 'orange';
+      if (this.time === 3) this.timerText.style.color = 'tomato';
       this.timerText.textContent = this.time;
     }, 1000);
   }
@@ -77,6 +78,7 @@ class MemoryGame {
 
   hideCards = () => {
     this.board.classList.remove('show-all');
+    this.isActive = true;
   }
 
   rotateCard = event => {
@@ -107,11 +109,11 @@ class MemoryGame {
       [secondCard, this.firstCardNode].forEach(el => el.classList.add('found'));
       this.uncoveredPic(firstCardId, this.pairs);
 
-      if (this.allPairs === this.pairs){
+      if (this.allPairs === this.pairs) {
         clearInterval(this.timer);
         this.showAlert(params.WON);
-      } 
-        
+      }
+
     } else {
 
       setTimeout(() => {
@@ -123,7 +125,7 @@ class MemoryGame {
         if (this.tries === this.maxTries) {
           clearInterval(this.timer);
           this.showAlert(params.LOST);
-        } 
+        }
       }, 900);
     }
   }
@@ -157,9 +159,10 @@ class MemoryGame {
   }
 
   reset = () => {
+    if (this.isActive === false) return;
     const cards = this.board.children;
     const cardsBack = this.uncoverdCardsBox.children;
-
+    
     for (let i = 0; i < this.cardsNumber; i++) {
       cards[i].classList.remove('rotate');
       cards[i].classList.remove('found');
@@ -175,6 +178,7 @@ class MemoryGame {
     this.pairsText.textContent = `0/${this.allPairs}`;
     this.triesText.textContent = `0/${this.maxTries}`;
     
+    this.isActive = false;
     clearInterval(this.timer);
     this.init();
   }
